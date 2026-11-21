@@ -276,10 +276,11 @@ const update = (input: {
   model: ModelFrontend
   eff?: Eff<MsgFrontend>
 } => {
+  const ctx = toCtx(input)
   switch (input.msg.t) {
     case 'auth': {
       const updated = AuthFrontend.update({
-        ctx: input.ctx,
+        ctx,
         model: input.model.auth,
         msg: input.msg.c,
       })
@@ -290,7 +291,7 @@ const update = (input: {
     }
     case 'spaces': {
       const updated = SpacesFrontend.update({
-        ctx: input.ctx,
+        ctx,
         model: input.model.spaces,
         msg: input.msg.c,
       })
@@ -301,7 +302,7 @@ const update = (input: {
     }
     case 'profile': {
       const updated = ProfileFrontend.update({
-        ctx: input.ctx,
+        ctx,
         model: input.model.profile,
         msg: input.msg.c,
       })
@@ -312,7 +313,7 @@ const update = (input: {
     }
     case 'wire': {
       const updated = WireFrontend.update({
-        ctx: input.ctx,
+        ctx,
         model: input.model.wire,
         msg: input.msg.c,
       })
@@ -323,7 +324,7 @@ const update = (input: {
     }
     case 'settings': {
       const updated = SettingsFrontend.update({
-        ctx: input.ctx,
+        ctx,
         model: input.model.settings,
         msg: input.msg.c,
       })
@@ -334,7 +335,7 @@ const update = (input: {
     }
     case 'currentScreen': {
       const updated = CurrentScreenFrontend.update({
-        ctx: input.ctx,
+        ctx,
         model: input.model.currentScreen,
         msg: input.msg.c,
       })
@@ -345,7 +346,7 @@ const update = (input: {
     }
     case 'viewport': {
       const updated = ViewportFrontend.update({
-        ctx: input.ctx,
+        ctx,
         model: input.model.viewport,
         msg: input.msg.c,
       })
@@ -356,7 +357,7 @@ const update = (input: {
     }
     case 'toaster': {
       const updated = ToasterFrontend.update({
-        ctx: input.ctx,
+        ctx,
         model: input.model.toaster,
         msg: input.msg.c,
       })
@@ -367,7 +368,7 @@ const update = (input: {
     }
     case 'screenSize': {
       const updated = ScreenSizeFrontend.update({
-        ctx: input.ctx,
+        ctx,
         model: input.model.screenSize,
         msg: input.msg.c,
       })
@@ -378,7 +379,7 @@ const update = (input: {
     }
     case 'copyToClipboard': {
       const updated = CopyToClipboardFrontend.update({
-        ctx: input.ctx,
+        ctx,
         model: input.model.copyToClipboard,
         msg: input.msg.c,
       })
@@ -389,7 +390,7 @@ const update = (input: {
     }
     case 'focus': {
       const updated = FocusFrontend.update({
-        ctx: input.ctx,
+        ctx,
         model: input.model.focus,
         msg: input.msg.c,
       })
