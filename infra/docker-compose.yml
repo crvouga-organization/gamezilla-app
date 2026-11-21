@@ -7,6 +7,7 @@ services:
       dockerfile: infra/frontend-web/frontend-web.Dockerfile
       args:
         NODE_ENV: development
+        SERVER_REGISTRY_SRC_URL: ${SERVER_REGISTRY_SRC_URL}
     ports:
       - '5173:80'
     profiles:

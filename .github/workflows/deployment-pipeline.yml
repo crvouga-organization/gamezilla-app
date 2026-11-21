@@ -122,7 +122,8 @@ jobs:
   e2e:
     name: E2E Tests
     needs: [unit, e2e-fast]
-    runs-on: ubuntu-latest
+    # Playwright 1.56 supports Ubuntu up to 24.04; ubuntu-latest is now newer.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
