@@ -1,5 +1,8 @@
+import fs from 'node:fs/promises'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { FileSystem } from '~/@/file-system'
-import { HttpClient } from '~/@/http-client/impl'
+import { IHttpClient } from '~/@/http-client/interface'
 import { HttpServer } from '~/@/http-server'
 import { KeyValueDb } from '~/@/key-value-db'
 import { ILogger, Logger } from '~/@/logger'
@@ -23,6 +26,20 @@ import { BackendCtxModule, topicContract } from '~/app/types'
 import { WireBackend } from '~/app/wire/backend'
 import { AppBackendCtxBase } from '../../../backend/ctx'
 
+// Every service runs in-process here, so serve the repo's local registry file
+// directly instead of fetching it from the Vite dev server.
+const SERVER_REGISTRY_LOCAL_PATH = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '../../../../../../public/server-registry.local.json',
+)
+
+const serverRegistryHttpClient: IHttpClient = {
+  async send() {
+    const body = await fs.readFile(SERVER_REGISTRY_LOCAL_PATH, 'utf8')
+    return new Response(body, { status: 200, headers: { 'Content-Type': 'application/json' } })
+  },
+}
+
 export const TestBackend = async (config: {
   sqlDb: ISqlDb
   topic: ITopicClient<typeof topicContract>
@@ -39,7 +56,7 @@ export const TestBackend = async (config: {
   const migrationPolicy = SqlDbMigrationPolicy.init({ t: 'never-run', logger: Logger.init({ t: 'noop' }) })
 
   const serverRegistry = ServerRegistry.init({
-    httpClient: HttpClient.init({ t: 'fetch' }),
+    httpClient: serverRegistryHttpClient,
     logger,
     migrationPolicy,
     serverRegistrySrcUrl: Url.derive('http://localhost:5173/server-registry.local.json', 'http'),

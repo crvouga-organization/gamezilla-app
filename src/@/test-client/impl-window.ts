@@ -14,7 +14,7 @@ export type ImplWindow = ImplWindowBase & {
 }
 
 const init = (config: ImplWindow): ITestNode => {
-  return {
+  const root: ITestNode = {
     async inputValue() {
       return null
     },
@@ -34,11 +34,13 @@ const init = (config: ImplWindow): ITestNode => {
     async attr(name) {
       return document.documentElement.getAttribute(name) ?? null
     },
+    // Search through root.find so lookups use the configured maxWait and poll
+    // (an element node waits only 1s, too short while the suite runs in parallel).
     async findByTestId(testId) {
-      return findByTestId(elementToTestNode(document.documentElement), testId)
+      return findByTestId(root, testId)
     },
     async findByRole(role, label) {
-      return findByRole(elementToTestNode(document.documentElement), role, label)
+      return findByRole(root, role, label)
     },
     async text() {
       return null
@@ -50,6 +52,7 @@ const init = (config: ImplWindow): ITestNode => {
       return true
     },
   }
+  return root
 }
 
 const find = async (
