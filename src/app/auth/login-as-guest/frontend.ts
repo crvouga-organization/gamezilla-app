@@ -64,7 +64,8 @@ export const update = (input: {
         eff: isOk(input.msg.result)
           ? Eff.batch([
               playSound(APP_SOUND.celebration),
-              replaceScreen({ n: 'spaces', t: 'spaces_list' }, true),
+              // The celebration sound stands in for the navigation sound here.
+              replaceScreen({ n: 'spaces', t: 'spaces_list' }, false),
               showToast(input.ctx.t('auth.logged-in-as-guest'), 'info', TimeSpan.seconds(4)),
             ])
           : undefined,

@@ -183,9 +183,12 @@ const updateFromMsg: typeof update = (input) => {
         case 'replace': {
           return {
             model: input.model,
-            async eff() {
-              await input.ctx.navigation.replace(SCREEN_QUERY_PARAM_NAME, encodeScreen(cmd.screen))
-            },
+            eff: Eff.batch([
+              cmd.playSound ? playSound(APP_SOUND.navBackwardMin) : null,
+              async () => {
+                await input.ctx.navigation.replace(SCREEN_QUERY_PARAM_NAME, encodeScreen(cmd.screen))
+              },
+            ]),
           }
         }
         case 'back': {
