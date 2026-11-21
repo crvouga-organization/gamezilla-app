@@ -135,7 +135,11 @@ export const toCurrentUserState = (input: { model: ModelFrontend; ctx: AppFronte
   const userSessions = UserSessionDbQueryCache.query(input.ctx, query)
   const isLoading = UserSessionDbQueryCache.isLoading(input.ctx, query)
 
-  const maybeUserSession = userSessions.find((userSession) => userSession.clientSessionId === input.ctx.clientSessionId)
+  // Logging out ends the session (endedAt) rather than deleting it, so only an
+  // active session counts as logged in.
+  const maybeUserSession = userSessions.find(
+    (userSession) => userSession.clientSessionId === input.ctx.clientSessionId && !userSession.endedAt,
+  )
 
   if (!maybeUserSession) {
     if (isLoading) return { t: 'loading' }

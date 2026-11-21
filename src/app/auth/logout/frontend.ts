@@ -10,6 +10,8 @@ import { Frag } from '~/@/vdom/primitives/frag'
 import { APP_SOUND } from '~/app/@/frontend/app-sound'
 import { AppFrontendCtxBase } from '~/app/@/frontend/ctx'
 import { playSound } from '~/app/@/frontend/sound-cmd'
+import { showToast } from '~/app/@/frontend/toaster-cmd'
+import { replaceScreen } from '~/app/frontend/current-screen/current-screen-cmd'
 import { FloatingConfirmation } from '~/app/@/ui/floating/confirmation/floating-confirmation'
 import { AuthFrontendCtx } from '../@/frontend/ctx'
 
@@ -58,14 +60,19 @@ export const update = (input: {
           ...input.model,
           logout_opened: null,
         },
-        async eff() {
-          await input.ctx.userSessionDb.update({
-            where: { op: '=', column: 'clientSessionId', value: input.ctx.clientSessionId },
-            set: { endedAt: UnixMs.now() },
-            limit: 1,
-            offset: 0,
-          })
-        },
+        eff: Eff.batch([
+          async () => {
+            await input.ctx.userSessionDb.update({
+              where: { op: '=', column: 'clientSessionId', value: input.ctx.clientSessionId },
+              set: { endedAt: UnixMs.now() },
+              limit: 1,
+              offset: 0,
+            })
+          },
+          replaceScreen({ n: 'auth', t: 'auth_login' }, false),
+          showToast(input.ctx.t('auth.current-user-logged-out')),
+          playSound(APP_SOUND.navBackwardMin),
+        ]),
       }
     }
 
