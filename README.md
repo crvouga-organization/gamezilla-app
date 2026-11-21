@@ -1,6 +1,6 @@
 # gamezilla.app
 
-[![Deployment Pipeline](https://github.com/crvouga/gamezilla.app/actions/workflows/deployment-pipeline.yml/badge.svg)](https://github.com/crvouga/gamezilla.app/actions/workflows/deployment-pipeline.yml)
+[![Deployment Pipeline](https://github.com/crvouga-organization/gamezilla/actions/workflows/deployment-pipeline.yml/badge.svg)](https://github.com/crvouga-organization/gamezilla/actions/workflows/deployment-pipeline.yml)
 
 ## Architecture
 
