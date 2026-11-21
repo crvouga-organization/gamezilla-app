@@ -164,6 +164,7 @@ const subscriptions = (input: { ctx: FrontendCtxModule; model: ModelFrontend }) 
     Sub.map(GameFrontend.subscriptions(input), (c) => ({ t: 'game', c })),
     Sub.map(SyncFrontend.subscriptions(input), (c) => ({ t: 'sync', c })),
     Sub.map(ListSpacesFrontend.subscriptions(input), (c) => ({ t: 'listSpaces', c })),
+    Sub.map(StartSpaceFrontend.subscriptions(input), (c) => ({ t: 'startSpace', c })),
     CurrentUserSpaceLoader.subscriptions(input),
     SpaceFrontend.subscriptions(input),
   ])

@@ -1,6 +1,7 @@
 import { Eff } from '~/@/eff'
 import { withEventMeta } from '~/@/event-sourced/event'
 import { IconPlus } from '~/@/ui/icon'
+import { Sub } from '~/@/sub'
 import { h } from '~/@/vdom/h'
 import { SpaceId } from '~/app/@/data/space-id'
 import { APP_SOUND } from '~/app/@/frontend/app-sound'
@@ -87,4 +88,10 @@ export const viewStartSpaceButton = (input: {
     submitDisabled: false,
     submitLoading: false,
   }
+}
+
+const startSpaceMsgs = Sub.where(spaceMsgs, (msg) => msg.t === 'userStartedSpace')
+
+export const subscriptions = (_input: { ctx: FrontendCtxModule; model: ModelFrontend }): Sub<Msg> => {
+  return Sub.map(startSpaceMsgs, (c): Msg => ({ t: 'startSpace_gotMsgSpace', c }))
 }
